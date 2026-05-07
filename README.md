@@ -34,6 +34,8 @@ Au cours du premier déploiement, il y a des chances que les pods ne soient pas 
 vagrant ssh -c "sudo k3s kubectl get pods"
 ```
 
+Pour lier le runner à la VM (si ça n'est pas fait automatiquement) aller dans la VM créée et suivre les étapes données par GitHub sur leur site en allant dans Paramètre -> Actions -> Runners -> New self-hosted runner
+
 ### Membres 
   * Kylian OPEL
   * Logan COMBLE
