@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/bullseye64" #image debian
+  
+  # Configuration du réseau avec DHCP
+  config.vm.network "private_network", type: "dhcp"
+  
+  # 2. AJOUTE le Forwarded Port pour que WSL 
+  # puisse se connecter en SSH via l'IP de Windows (0.0.0.0).
+  config.vm.network "forwarded_port", guest: 22, host: 2222, host_ip: "0.0.0.0", id: "ssh"
+  
+  # Désactive le partage de dossier qui pose problème sur WSL
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  # Configuration spécifique à VirtualBox
+  config.vm.provider "virtualbox" do |vb|
+    vb.name = "vb_k3s"
+    vb.memory = "4096"
+    vb.cpus = 2
+  end
+end

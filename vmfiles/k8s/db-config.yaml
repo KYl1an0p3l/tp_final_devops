@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-init-script
+data:
+  init_database.sql: |
+    CREATE DATABASE IF NOT EXISTS `my_db`;
+    USE `my_db`;
+    CREATE TABLE `users` (
+      `id` varchar(36) NOT NULL,
+      `first_name` varchar(255) NOT NULL,
+      `last_name` varchar(255) NOT NULL,
+      `age` int(11) NOT NULL,
+      PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.6
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              value: "root"
+            - name: MARIADB_DATABASE
+              value: "my_db"
+            - name: MARIADB_USER
+              value: "user"
+            - name: MARIADB_PASSWORD
+              value: "root"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: db-storage
+              mountPath: /var/lib/mysql
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d/init_database.sql
+              subPath: init_database.sql
+      volumes:
+        - name: db-storage
+          persistentVolumeClaim:
+            claimName: mariadb-pvc
+        - name: init-script
+          configMap:
+            name: db-init-script
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
