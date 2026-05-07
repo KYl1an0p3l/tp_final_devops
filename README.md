@@ -25,7 +25,7 @@ Lancer le fichier deploy.sh depuis un terminal Linux. Ce fichier se charge de l'
 
 ### Pré-requis
 * Vagrant et VirtualBox installés.
-* Un environnement compatible (WSL recommandé).
+* Un environnement compatible (Linux ou WSL).
 
 ### Procédure
 
@@ -34,7 +34,7 @@ Au cours du premier déploiement, il y a des chances que les pods ne soient pas 
 vagrant ssh -c "sudo k3s kubectl get pods"
 ```
 
-### Memnbres 
+### Membres 
   * Kylian OPEL
   * Logan COMBLE
   * Lucas MONNEHAY
