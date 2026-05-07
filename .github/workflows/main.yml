@@ -2,7 +2,7 @@ name: Build and Push Docker Image
 
 on:
   push:
-    branches: [ "main" ] # Se lance à chaque push sur la branche main
+    branches: [ "master" ] # Se lance à chaque push sur la branche main
 
 jobs:
   build-and-push:
