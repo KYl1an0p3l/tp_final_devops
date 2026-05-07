@@ -34,7 +34,19 @@ Au cours du premier déploiement, il y a des chances que les pods ne soient pas 
 vagrant ssh -c "sudo k3s kubectl get pods"
 ```
 
-Pour lier le runner à la VM (si ça n'est pas fait automatiquement) aller dans la VM créée et suivre les étapes données par GitHub sur leur site en allant dans Paramètre -> Actions -> Runners -> New self-hosted runner
+Pour lier le runner à la VM (si ça n'est pas fait automatiquement) aller dans la VM créée et suivre ces instructions :
+
+```bash
+# Create a folder
+$ mkdir actions-runner && cd actions-runner# Download the latest runner package
+$ curl -o actions-runner-linux-x64-2.334.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.334.0/actions-runner-linux-x64-2.334.0.tar.gz# Optional: Validate the hash
+$ echo "048024cd2c848eb6f14d5646d56c13a4def2ae7ee3ad12122bee960c56f3d271  actions-runner-linux-x64-2.334.0.tar.gz" | shasum -a 256 -c# Extract the installer
+$ tar xzf ./actions-runner-linux-x64-2.334.0.tar.gz
+Configure
+# Create the runner and start the configuration experience
+$ ./config.sh --url https://github.com/KYl1an0p3l/tp_final_devops --token A25GWW3LU7RMF2AGI3KIYSLJ7RZNS# Last step, run it!
+$ ./run.sh
+```
 
 ### Membres 
   * Kylian OPEL
